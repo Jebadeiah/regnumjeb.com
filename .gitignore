@@ -1,6 +1,7 @@
 # Ignore GitHub Actions runner artifacts
 actions-runner/
 *.tar.gz
+externals/
 
 # Ignore system logs, build files, and temp files
 *.log
