@@ -35,6 +35,7 @@ require_once __DIR__ . '/includes/config.php';
 
     <?php if (IS_DEV && isset($_SESSION['user_id'])): ?>
       <div style="margin-top: 20px; padding: 10px; background-color: #eef;">
+        <p>WUTANG</p>
         <strong>DEV MODE – Logged in as:</strong><br>
         Username: <?= htmlspecialchars($_SESSION['username']) ?><br>
         Email: <?= htmlspecialchars($_SESSION['user_email']) ?><br>
