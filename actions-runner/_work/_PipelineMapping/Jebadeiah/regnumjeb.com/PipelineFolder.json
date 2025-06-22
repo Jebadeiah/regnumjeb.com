@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "Jebadeiah/regnumjeb.com",
+  "pipelineDirectory": "regnumjeb.com",
+  "workspaceDirectory": "regnumjeb.com/regnumjeb.com",
+  "repositories": {
+    "Jebadeiah/regnumjeb.com": {
+      "repositoryPath": "regnumjeb.com/regnumjeb.com",
+      "lastRunOn": "06/22/2025 07:59:54 -07:00"
+    }
+  },
+  "lastRunOn": "06/22/2025 11:32:00 -07:00"
+}
