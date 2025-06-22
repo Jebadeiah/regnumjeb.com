@@ -1,0 +1,14 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore compiled assets
+/dist
+/build
+
+# Ignore logs and runtime data
+*.log
+*.pid
+
+# Ignore sensitive config
+config/credentials.php
