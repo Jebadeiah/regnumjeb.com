@@ -1,0 +1,30 @@
+# Ignore GitHub Actions runner artifacts
+actions-runner/
+*.tar.gz
+<<<<<<< HEAD
+externals/
+=======
+>>>>>>> 6cc3c6dfa247acbf1900d0495fb1b09c62cf7dee
+
+# Ignore system logs, build files, and temp files
+*.log
+*.pid
+*.tmp
+*.bak
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Node / frontend tooling (if applicable later)
+node_modules/
+dist/
+build/
+
+# PHP composer dependencies (if you add Composer)
+vendor/
+
+# Git configuration safety
+.gitignore
+.env
