@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelBtns = document.querySelectorAll(".cancel-btn");
   const flipToggles = document.querySelectorAll(".flip-toggle");
 
-  // Access header shadow DOM
+  const loginInner = loginForm.querySelector(".login-inner");
+
   const headerComponent = document.querySelector("header-component");
   let openLoginBtn, openRegisterBtn;
 
@@ -24,13 +25,24 @@ document.addEventListener("DOMContentLoaded", () => {
       loginForm.classList.add("back-face");
       loginForm.classList.remove("front-face");
       card.classList.remove("flipped");
-    } else {
+      loginInner.classList.remove("fix-orientation");
+    } else if (formName === "login") {
       loginForm.classList.add("front-face");
       loginForm.classList.remove("back-face");
       registerForm.classList.add("back-face");
       registerForm.classList.remove("front-face");
       card.classList.add("flipped");
+
+      // Delay fixing mirrored text until after flip completes
+      loginInner.classList.remove("fix-orientation");
+      setTimeout(() => {
+        loginInner.classList.add("fix-orientation");
+      }, 600);
+    } else {
+        modal.style.display = "none";
     }
+    registerForm.setAttribute("aria-hidden", formName !== "register");
+    loginForm.setAttribute("aria-hidden", formName !== "login");
 
     modal.style.display = "flex";
     pageContent?.classList.add("blur");
