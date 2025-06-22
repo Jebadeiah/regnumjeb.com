@@ -1,14 +1,26 @@
-# Ignore system files
+# Ignore GitHub Actions runner artifacts
+actions-runner/
+*.tar.gz
+
+# Ignore system logs, build files, and temp files
+*.log
+*.pid
+*.tmp
+*.bak
+*.swp
+
+# OS-specific files
 .DS_Store
 Thumbs.db
 
-# Ignore compiled assets
-/dist
-/build
+# Node / frontend tooling (if applicable later)
+node_modules/
+dist/
+build/
 
-# Ignore logs and runtime data
-*.log
-*.pid
+# PHP composer dependencies (if you add Composer)
+vendor/
 
-# Ignore sensitive config
-config/credentials.php
+# Git configuration safety
+.gitignore
+.env
