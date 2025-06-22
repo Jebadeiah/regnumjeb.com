@@ -24,6 +24,8 @@
   min-height: 450px;
 }
 
+/*wutang*/
+
 /* Flip trigger */
 .flipped {
   transform: rotateY(180deg);
