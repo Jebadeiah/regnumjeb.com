@@ -37,19 +37,15 @@
 
 .front-face {
   display: block;
-  backface-visibility: hidden;
 }
 
 .back-face {
   display: none;
-  transform: rotateY(180deg);
+}
+
+.face {
   backface-visibility: hidden;
 }
-
-.back-face * {
-  transform: rotateY(180deg);
-}
-
 
 /* Input Fields */
 input[type="text"],
@@ -75,18 +71,29 @@ button {
 }
 
 .confirm {
+      margin:0;
   background-color: #ffb3c1;
   color: white;
 }
 
 .cancel {
+      margin:0;
   background-color: #ffc9de;
+}
+
+.checkbox {
+  margin: 1rem auto 0;
 }
 
 .flip-toggle {
   display: block;
   margin: 2rem auto 0;
   background-color: #b5ead7;
+}
+
+.login-inner {
+  transform: scaleX(-1);
+  direction: ltr;
 }
 
 .auth-buttons {
@@ -122,6 +129,6 @@ button {
 }
 
 .blur {
-  filter: blur(6px);
-  transition: filter 0.3s ease;
+  filter: blur(1.5rem);
+  transition: filter 1s ease;
 }
