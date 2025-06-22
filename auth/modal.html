@@ -1,0 +1,38 @@
+<div class="modal" id="authModal">
+  <div class="modal-content" id="card">
+
+    <!-- Front: Register Form -->
+    <form id="registerForm" method="POST" action="auth/register.php" class="card-face front-face">
+      <h2>Register</h2>
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="email" name="email" placeholder="Email Address" required />
+      <input type="password" name="password" placeholder="Password" minlength="12" required />
+      <input type="password" name="confirmPassword" placeholder="Confirm Password" minlength="12" required />
+
+      <div class="buttons-inline">
+        <button type="submit" class="confirm">Confirm</button>
+        <button type="button" class="cancel-btn cancel">Cancel</button>
+      </div>
+
+      <button type="button" class="flip-toggle">Flip to Login</button>
+      <div class="warning" id="registerWarning"></div>
+    </form>
+
+    <!-- Back: Login Form -->
+    <form id="loginForm" method="POST" action="auth/login.php" class="card-face back-face">
+      <h2>Login</h2>
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <label><input type="checkbox" name="saveUsername" /> Save Username</label>
+
+      <div class="buttons-inline">
+        <button type="submit" class="confirm">Confirm</button>
+        <button type="button" class="cancel-btn cancel">Cancel</button>
+      </div>
+
+      <button type="button" class="flip-toggle">Flip to Register</button>
+      <div class="warning" id="loginWarning"></div>
+    </form>
+
+  </div>
+</div>
