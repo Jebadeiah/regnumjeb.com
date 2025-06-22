@@ -34,6 +34,7 @@ require_once __DIR__ . '/includes/config.php';
     <?php include 'auth/modal.html'; ?>
 
     <?php if (IS_DEV && isset($_SESSION['user_id'])): ?>
+        <p>Wutang!</p>
       <div style="margin-top: 20px; padding: 10px; background-color: #eef;">
         <strong>DEV MODE – Logged in as:</strong><br>
         Username: <?= htmlspecialchars($_SESSION['username']) ?><br>
