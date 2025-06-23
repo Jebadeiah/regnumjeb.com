@@ -1,65 +1,53 @@
 <?php
-// For debugging — disable in prod
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+session_start();
 
-require_once __DIR__ . '/../db.php';        // Adjust path if needed
-require_once __DIR__ . '/../mail.php';
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/mail.php';
 
-$banned = ['admin', 'support', 'null', 'undefined'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
 
-// Only allow POST requests
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    exit('This endpoint only accepts POST requests.');
-}
-
-// Sanitize inputs
-$username = trim($_POST['username'] ?? '');
-$email = trim($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
-$confirm = $_POST['confirmPassword'] ?? '';
-
-if (!$username || !$email || !$password || !$confirm) {
-    exit('Missing required fields.');
-}
-
-if ($password !== $confirm) {
-    exit('Passwords do not match.');
-}
-
-if (strlen($password) < 12) {
-    exit('Password must be at least 12 characters long.');
-}
-
-if (in_array(strtolower($username), $banned)) {
-    exit('Credentials are invalid.');
-}
-
-try {
-    // Check for duplicate email or username
-    $check = $pdo->prepare("SELECT 1 FROM users WHERE email = :email OR username = :username");
-    $check->execute(['email' => $email, 'username' => $username]);
-    if ($check->fetch()) {
-        exit('Credentials are invalid.');
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = "Invalid email address.";
+        header("Location: /register.php");
+        exit;
     }
 
-    $hash = password_hash($password, PASSWORD_DEFAULT);
+    if (strlen($password) < 6) {
+        $_SESSION['error'] = "Password must be at least 6 characters.";
+        header("Location: /register.php");
+        exit;
+    }
+
+    // Check if email already exists
+    $stmt = $db->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
+    $stmt->execute([':email' => $email]);
+    if ($stmt->fetch()) {
+        $_SESSION['error'] = "That email is already registered.";
+        header("Location: /register.php");
+        exit;
+    }
+
+    // Create user
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $token = bin2hex(random_bytes(32));
 
-    $insert = $pdo->prepare("INSERT INTO users (username, email, password_hash, verification_token)
-                             VALUES (?, ?, ?, ?)");
-    $insert->execute([$username, $email, $hash, $token]);
+    $stmt = $db->prepare("
+        INSERT INTO users (email, password, verification_token, is_verified)
+        VALUES (:email, :password, :token, 0)
+    ");
+    $stmt->execute([
+        ':email'    => $email,
+        ':password' => $hashedPassword,
+        ':token'    => $token
+    ]);
 
-    // Set cookie
-    setcookie('regnum_auth', $token, time() + 604800, '/', '', true, true);
-
-    // Send email
-    $verifyUrl = "https://regnumjeb.com/verify.php?token=$token";
+    // Send verification email
+    $verifyUrl = "https://regnumjeb.com/auth/verify.php?token=$token";
     sendVerificationEmail($email, $verifyUrl);
 
-    echo 'Registration successful. Check your email to verify.';
-} catch (Exception $e) {
-    error_log('Registration error: ' . $e->getMessage());
-    exit('Something went wrong.');
+    $_SESSION['success'] = "Registration successful! Please check your email to verify your account.";
+    header("Location: /login.php");
+    exit;
 }
