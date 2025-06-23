@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 set -euo pipefail
@@ -35,5 +34,14 @@ abort() {
   rsync -av --delete "$TMP_DIR/" "$PROJECT_DIR/" || abort "Rsync failed"
 
   log "✅ Deploy finished successfully"
-  log ""
 } 2>&1 | tee -a "$LOG_FILE"
+
+exit_code=${PIPESTATUS[0]}
+
+if [ $exit_code -eq 0 ]; then
+  log "🎉 Deployment completed without errors"
+else
+  log "💥 Deployment failed with exit code $exit_code"
+fi
+
+exit $exit_code
