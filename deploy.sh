@@ -1,8 +1,9 @@
+
 #!/bin/bash
 
 set -euo pipefail
 
-REPO="git@github.com:Jebadeiah/regnumjeb.com.git"
+REPO="https://github.com/Jebadeiah/regnumjeb.com.git"
 BRANCH="main"
 TMP_DIR="/tmp/deploy_regnum"
 PROJECT_DIR="/var/www/regnumjeb.com"
