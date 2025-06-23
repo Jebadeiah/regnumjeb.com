@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/db.php';
 
@@ -23,8 +24,8 @@ if ($usernameInput === '' || $passwordInput === '') {
 }
 
 try {
-    // Query for user credentials
-    $query = "SELECT id, email, password_hash FROM users WHERE username = ? ORDER BY created_at DESC LIMIT 1";
+    // Query for user credentials, include is_verified
+    $query = "SELECT id, email, password_hash, is_verified FROM users WHERE username = ? ORDER BY created_at DESC LIMIT 1";
     $stmt = $db->prepare($query);
     $stmt->execute([$usernameInput]);
     $user = $stmt->fetch();
@@ -32,6 +33,12 @@ try {
     // Validate credentials
     if (!$user || !password_verify($passwordInput, $user['password_hash'])) {
         header("Location: ../index.php?error=" . urlencode($invalid));
+        exit;
+    }
+
+    // Check if email is verified
+    if (!$user['is_verified']) {
+        header("Location: ../index.php?error=" . urlencode('Please verify your email before logging in.'));
         exit;
     }
 
@@ -63,6 +70,7 @@ try {
     // Redirect after successful login
     header("Location: ../game.php");
     exit;
+
 } catch (PDOException $e) {
     if (IS_DEV) {
         die("DB Error: " . htmlspecialchars($e->getMessage()));
