@@ -30,7 +30,7 @@ function sendVerificationEmail($toEmail, $verifyUrl) {
 
         // Content
         $mail->isHTML(true);
-        $mail->Subject = 'Please verify your email address';
+        $mail->Subject = 'Please verify your email address for RegnumJeb';
         $mail->Body    = "
           <p>Welcome to RegnumJeb!</p>
           <p>Click the link below to verify your email and activate your account:</p>
