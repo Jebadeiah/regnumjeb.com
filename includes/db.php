@@ -2,7 +2,7 @@
 $creds = require __DIR__ . '/../config/credentials.php';
 
 $host = 'localhost';
-$dbname = 'regnumjeb_db';
+$dbname = 'regnum_auth';
 $user = $creds['db_user'];
 $pass = $creds['db_pass'];
 
