@@ -12,3 +12,12 @@ if (
 } else {
     define('IS_DEV', false);
 }
+
+// Logging path for email logs
+define('LOG_PATH', __DIR__ . '/../logs/mail.log');
+
+// Name of the authentication cookie used for auto-login
+define('AUTH_COOKIE_NAME', 'regnum_user');
+
+// Base URL
+define('BASE_URL', IS_DEV ? 'http://localhost:8000/' : 'https://www.regnumjeb.com/');
