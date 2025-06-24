@@ -2,8 +2,17 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Load Composer's autoloader
 require __DIR__ . '/../vendor/autoload.php';
+$creds = require __DIR__ . '/../config/credentials.php';
+define('LOG_PATH', __DIR__ . '/../logs/mail.log');
+
+/**
+ * Appends a line to the custom log file
+ */
+function log_email_event(string $message): void {
+    $timestamp = date('[Y-m-d H:i:s]');
+    error_log("$timestamp $message\n", 3, LOG_PATH);
+}
 
 /**
  * Sends a verification email with a clickable link
@@ -13,6 +22,8 @@ require __DIR__ . '/../vendor/autoload.php';
  * @return bool             True if sent, false on failure
  */
 function sendVerificationEmail($toEmail, $verifyUrl) {
+    global $creds;
+
     $mail = new PHPMailer(true);
 
     try {
@@ -20,13 +31,13 @@ function sendVerificationEmail($toEmail, $verifyUrl) {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'regnumjeb@gmail.com';
-        $mail->Password   = 'mfbw svor pgbb ifsc';
+        $mail->Username   = $creds['smtp_user'];
+        $mail->Password   = $creds['smtp_pass'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
         // Recipients
-        $mail->setFrom('regnumjeb@gmail.com', 'RegnumJeb');
+        $mail->setFrom($creds['smtp_user'], 'RegnumJeb');
         $mail->addAddress($toEmail);
 
         // Content
@@ -39,13 +50,16 @@ function sendVerificationEmail($toEmail, $verifyUrl) {
             <hr>
             <p>If you didn’t sign up, you can ignore this message.</p>
         ";
-
         $mail->AltBody = "Welcome to RegnumJeb!\n\nPlease verify your email: $verifyUrl";
 
         $mail->send();
+        log_email_event("✅ Verification email sent to $toEmail");
         return true;
+
     } catch (Exception $e) {
-        error_log("Email could not be sent to $toEmail. Error: {$mail->ErrorInfo}");
+        $errorMsg = "❌ Email failed to $toEmail – " . $mail->ErrorInfo;
+        log_email_event($errorMsg);
+        error_log($errorMsg);
         return false;
     }
 }
